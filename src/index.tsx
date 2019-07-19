@@ -25,7 +25,8 @@ type Action =
   | "ACT_TAKE_NOTE"
   | "ACT_GENERATE_TESTING_RESULTS"
   | "ACT_ACCEPT_TESTING_RESULTS"
-  | "ACT_DECLINE_TESTING_RESULT";
+  | "ACT_DECLINE_TESTING_RESULT"
+  | "ACT_SERVICE_PUBLICATION";
 
 interface DynamicContainer {
   readonly name: string;
@@ -63,7 +64,8 @@ const actions: ReadonlyArray<Action> = [
   "ACT_TAKE_NOTE",
   "ACT_GENERATE_TESTING_RESULTS",
   "ACT_ACCEPT_TESTING_RESULTS",
-  "ACT_DECLINE_TESTING_RESULT"
+  "ACT_DECLINE_TESTING_RESULT",
+  "ACT_SERVICE_PUBLICATION"
 ];
 
 interface ApplicationProjection {
