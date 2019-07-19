@@ -27,11 +27,10 @@ type Action =
   | "ACT_ACCEPT_TESTING_RESULTS"
   | "ACT_DECLINE_TESTING_RESULT";
 
-interface Dynamic {
+interface DynamicContainer {
   readonly name: string;
   readonly view: string;
   readonly container: string;
-  readonly actionHandlers: ReadonlyArray<string>;
 }
 
 const presentations: ReadonlyArray<Presentation> = [
@@ -72,14 +71,16 @@ interface ApplicationProjection {
   readonly organization: Organization | "";
   readonly authorities: ReadonlyArray<string>;
   readonly actions: ReadonlyArray<Action>;
-  readonly dynamics: ReadonlyArray<Dynamic>;
+  readonly dynamics: {
+    readonly actionHandlers: ReadonlyArray<string>;
+    readonly containers: ReadonlyArray<DynamicContainer>;
+  };
 }
 
-const defaultDynamic: Dynamic = {
+const defaultDynamicContainer: DynamicContainer = {
   name: "",
   view: "",
-  container: "",
-  actionHandlers: []
+  container: ""
 };
 
 const defaultValues: ApplicationProjection = {
@@ -87,7 +88,10 @@ const defaultValues: ApplicationProjection = {
   organization: "",
   authorities: [],
   actions: [],
-  dynamics: [defaultDynamic]
+  dynamics: {
+    actionHandlers: [],
+    containers: [defaultDynamicContainer]
+  }
 };
 
 function App() {
@@ -176,10 +180,39 @@ function App() {
                   ))}
                 </Field>
               </div>
+
+              <div className="field">
+                <label>Action handlers: </label>
+                <Field
+                  name="dynamics.actionHandlers"
+                  render={field => (
+                    <ReactTags
+                      allowNew
+                      placeholder=""
+                      autofocus={false}
+                      classNames={{ root: "action-handlers" } as any}
+                      tags={field.input.value.map((v: string) => ({
+                        name: v
+                      }))}
+                      handleAddition={tag =>
+                        field.input.onChange([
+                          ...field.input.value,
+                          tag.name.trim()
+                        ])
+                      }
+                      handleDelete={i => {
+                        const newArray = [...field.input.value];
+                        newArray.splice(i, 1);
+                        field.input.onChange(newArray);
+                      }}
+                    />
+                  )}
+                />
+              </div>
             </div>
 
             <div>
-              <FieldArray name="dynamics">
+              <FieldArray name="dynamics.containers">
                 {({ fields }) =>
                   fields.map((name, index) => (
                     <div className="dynamic" key={index}>
@@ -208,34 +241,6 @@ function App() {
                           type="text"
                         />
                       </div>
-                      <div className="field">
-                        <label>Action handlers: </label>
-                        <Field
-                          name={`${name}.actionHandlers`}
-                          render={field => (
-                            <ReactTags
-                              allowNew
-                              placeholder=""
-                              autofocus={false}
-                              classNames={{ root: "action-handlers" } as any}
-                              tags={field.input.value.map((v: string) => ({
-                                name: v
-                              }))}
-                              handleAddition={tag =>
-                                field.input.onChange([
-                                  ...field.input.value,
-                                  tag.name.trim()
-                                ])
-                              }
-                              handleDelete={i => {
-                                const newArray = [...field.input.value];
-                                newArray.splice(i, 1);
-                                field.input.onChange(newArray);
-                              }}
-                            />
-                          )}
-                        />
-                      </div>
                     </div>
                   ))
                 }
@@ -246,15 +251,20 @@ function App() {
               <button
                 type="button"
                 onClick={() =>
-                  renderProps.form.mutators.push("dynamics", defaultDynamic)
+                  renderProps.form.mutators.push(
+                    "dynamics.containers",
+                    defaultDynamicContainer
+                  )
                 }
               >
                 Add dynamic
               </button>
-              {renderProps.values.dynamics.length > 0 && (
+              {renderProps.values.dynamics.containers.length > 0 && (
                 <button
                   type="button"
-                  onClick={() => renderProps.form.mutators.pop("dynamics")}
+                  onClick={() =>
+                    renderProps.form.mutators.pop("dynamics.containers")
+                  }
                 >
                   Delete last dynamic
                 </button>
