@@ -73,6 +73,7 @@ interface ApplicationProjection {
   readonly organization: Organization | "";
   readonly authorities: ReadonlyArray<string>;
   readonly actions: ReadonlyArray<Action>;
+  readonly createExecutionLog: boolean;
   readonly dynamics: {
     readonly actionHandlers: ReadonlyArray<string>;
     readonly containers: ReadonlyArray<DynamicContainer>;
@@ -90,6 +91,7 @@ const defaultValues: ApplicationProjection = {
   organization: "",
   authorities: [],
   actions: [],
+  createExecutionLog: false,
   dynamics: {
     actionHandlers: [],
     containers: [defaultDynamicContainer]
@@ -181,6 +183,10 @@ function App() {
                     </option>
                   ))}
                 </Field>
+              </div>
+              <div className="field">
+                <label htmlFor="createExecutionLog">Create execution log: </label>
+                <Field name="createExecutionLog" type="checkbox" component="input" />
               </div>
 
               <div className="field">

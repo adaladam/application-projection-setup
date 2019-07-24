@@ -18,7 +18,7 @@
   width: 150px;
 }
 
-.App form .field input,
+.App form .field input:not([type="checkbox"]),
 .App form .field select {
   width: 300px;
 }
