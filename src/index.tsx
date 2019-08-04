@@ -23,10 +23,10 @@ type Action =
   | "ACT_ACCEPT_APPLICATION"
   | "ACT_DECLINE_APPLICATION"
   | "ACT_TAKE_NOTE"
-  | "ACT_GENERATE_TESTING_RESULTS"
-  | "ACT_ACCEPT_TESTING_RESULTS"
-  | "ACT_DECLINE_TESTING_RESULT"
-  | "ACT_SERVICE_PUBLICATION";
+  | "ACT_GENERATE_TESTING_ACT"
+  | "ACT_SERVICE_PUBLICATION"
+  | "ACT_SIGNATURE_TESTING_ACT"
+  | "ACT_SIGNATURE_APPLICATION_AND_AGREEMENT";
 
 interface DynamicContainer {
   readonly name: string;
@@ -62,10 +62,10 @@ const actions: ReadonlyArray<Action> = [
   "ACT_ACCEPT_APPLICATION",
   "ACT_DECLINE_APPLICATION",
   "ACT_TAKE_NOTE",
-  "ACT_GENERATE_TESTING_RESULTS",
-  "ACT_ACCEPT_TESTING_RESULTS",
-  "ACT_DECLINE_TESTING_RESULT",
-  "ACT_SERVICE_PUBLICATION"
+  "ACT_GENERATE_TESTING_ACT",
+  "ACT_SERVICE_PUBLICATION",
+  "ACT_SIGNATURE_TESTING_ACT",
+  "ACT_SIGNATURE_APPLICATION_AND_AGREEMENT"
 ];
 
 interface ApplicationProjection {
@@ -185,8 +185,14 @@ function App() {
                 </Field>
               </div>
               <div className="field">
-                <label htmlFor="createExecutionLog">Create execution log: </label>
-                <Field name="createExecutionLog" type="checkbox" component="input" />
+                <label htmlFor="createExecutionLog">
+                  Create execution log:{" "}
+                </label>
+                <Field
+                  name="createExecutionLog"
+                  type="checkbox"
+                  component="input"
+                />
               </div>
 
               <div className="field">
