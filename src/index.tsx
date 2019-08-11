@@ -17,7 +17,7 @@ type Presentation =
   | "IN_PROCESS"
   | "COMPLETED";
 
-type Organization = "INITIATOR" | "SERVICE_OWNER" | "REGULATOR" | "OPERATOR";
+type Organization = "INITIATOR" | "SERVICE_CLIENT" | "SERVICE_OWNER" | "REGULATOR" | "OPERATOR";
 
 type Action =
   | "ACT_ACCEPT_APPLICATION"
@@ -46,6 +46,7 @@ const presentations: ReadonlyArray<Presentation> = [
 
 const organizations: ReadonlyArray<Organization> = [
   "INITIATOR",
+  "SERVICE_CLIENT",
   "SERVICE_OWNER",
   "REGULATOR",
   "OPERATOR"
